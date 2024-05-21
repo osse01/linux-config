@@ -1,0 +1,75 @@
+super+t
+	xfce4-terminal
+super+r
+	rofi -show run
+super+b
+	firefox
+
+# Reload configuration files
+super+R
+	pkill -USR1 -x sxhkd &&	bspc wm -r && pkill -USR1 -x picom && pkill -USR1 -x conky && polybar -r mybar
+
+# Alternate between the tiled and moocle layout
+super+m
+	bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest window
+super + g
+	bspc node -s biggest.window
+
+# focus the next/previous window in the current desktop
+super + {_,shift + }c
+	bspc node -f {next,prev}.local.!hidden.window
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# focus or send to the given desktop
+super + {_,shift + }{1-8}
+	bspc {desktop -f,node -d} {1-8}
+
+# send focused node to next or previous monitor (maybe change the keys for this hotkey, idk)
+super + {_,shift + }Tab
+	bspc node -m {next,prev} --follow && \
+	bspc query -M | while read -r monitor; do \
+	    bspc query -D -m "$monitor" --names | sort -g | xargs -rd'\n' bspc monitor "$monitor" -o; \
+	done
+ 
+# Toggle sound (mute/unmute)
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Increase volume
+XF86AudioRaiseVolume
+  pactl set-sink-volume @DEFAULT_SINK@ +5%
+
+# Decrease volume
+XF86AudioLowerVolume
+  pactl set-sink-volume @DEFAULT_SINK@ -5%
+
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+# close window
+super + q
+	bspc node -k
+
+# Hide all apps toggle
+super + d
+	while bspc node any.hidden.window -g hidden=off; do false; done \
+    	&& while bspc node 'any.!hidden.window' -g hidden=on; do :; done
+	bspc query -N -n .window | while IFS= read -r wid
+    		do bspc node "$wid" -g hidden
+	done
+

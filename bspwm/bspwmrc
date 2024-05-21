@@ -1,0 +1,39 @@
+#!/bin/bash
+ 
+xsetroot -cursor_name left_ptr
+pgrep -x sxhkd >/dev/null 	|| sxhkd &
+pgrep -x conky >/dev/null 	|| conky &
+#pgrep -x panel >/dev/null 	|| panel &
+pgrep -x picom >/dev/null 	|| picom &
+$HOME/.config/polybar/launch.sh # Launch polybar
+
+######################################################
+bspc monitor -d I II III IV
+bspc monitor HDMI-0 -d V VI VII IIX
+feh --bg-fill /home/oscar/Pictures/cool1.jpg
+
+
+bspc config border_width		0
+bspc config window_gap			15
+
+bspc config split_ratio			0.5
+bspc config borderless_monocle		true
+bspc config gapless_monocle		false
+
+# node focus follows pointer
+#bspc config focus_follows_pointer	true
+#bspc config pointer_modifier		mod1
+ 
+bspc config automatic_scheme	spiral
+ 
+bspc rule -a Chromium desktop='^2'
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+
+ws-icon-0				= I
+ws-icon-1				= II
+ws-icon-2				= III
+ws-icon-3				= IV
+ws-icon-4				= V
+ws-icon-5				= VI
+ws-icon-6				= VII
+ws-icon-default				= 
