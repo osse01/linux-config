@@ -28,6 +28,7 @@ bspc config automatic_scheme	spiral
  
 bspc rule -a Chromium desktop='^2'
 bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a matlab state=floating follow=on
 
 ws-icon-0				= I
 ws-icon-1				= II
